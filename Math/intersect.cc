@@ -16,7 +16,21 @@
 //    IINTERSECT intersect
 
 int BSpherePlaneIntersect(const BSphere *bs, Plane *pl) {
+    float d=pl->distance(bs->getPosition());
+    float signedD=pl->signedDistance(bs->getPosition());
+    float r=bs->getRadius();
 
+    if (d<r){
+        return IINTERSECT;
+    }
+    if (d>r){
+        if(signedD>0){
+            return +IREJECT;
+        }
+        else{
+            return -IREJECT;    
+        }
+    }
 }
 
 
@@ -26,7 +40,33 @@ int BSpherePlaneIntersect(const BSphere *bs, Plane *pl) {
 //    IREJECT don't intersect
 
 int  BBoxBBoxIntersect(const BBox *bba, const BBox *bbb ) {
+    Vector3 bbaMin=bba->m_min;
+    Vector3 bbaMax=bba->m_max;
+    Vector3 bbbMin=bbb->m_min;
+    Vector3 bbbMax=bbb->m_max;
 
+    //Lehen Puntua: bbbMin barruan al dago?
+    if(bbaMin.x()>bbbMin.x() && bbaMin.x()<bbbMax.x()){
+        if(bbaMin.y()>bbbMin.y() && bbaMin.y()<bbbMax.y()){
+            if(bbaMin.z()>bbbMin.z() && bbaMin.z()<bbbMax.z()){
+                return IINTERSECT;
+            }
+        }
+    }
+
+    //Bigarren Puntua: bbbMin barruan al dago?
+    if(bbaMin.x()>bbbMax.x() && bbbMax.x()<bbbMax.x()){
+        if(bbaMin.y()>bbbMax.y() && bbbMax.y()<bbbMax.y()){
+            if(bbaMin.z()>bbbMax.z() && bbbMax.z()<bbbMax.z()){
+                return IINTERSECT;
+            }
+        }
+    }
+
+
+
+    return IREJECT;
+    //Bigarren Puntua:
 }
 
 // @@ TODO: test if a BBox and a plane intersect.
