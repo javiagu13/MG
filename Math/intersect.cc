@@ -55,9 +55,9 @@ int  BBoxBBoxIntersect(const BBox *bba, const BBox *bbb ) {
     }
 
     //Bigarren Puntua: bbbMin barruan al dago?
-    if(bbaMin.x()>bbbMax.x() && bbbMax.x()<bbbMax.x()){
-        if(bbaMin.y()>bbbMax.y() && bbbMax.y()<bbbMax.y()){
-            if(bbaMin.z()>bbbMax.z() && bbbMax.z()<bbbMax.z()){
+    if(bbaMax.x()>bbbMin.x() && bbaMax.x()<bbbMax.x()){
+        if(bbaMax.y()>bbbMin.y() && bbaMax.y()<bbbMax.y()){
+            if(bbaMax.z()>bbbMin.z() && bbaMax.z()<bbbMax.z()){
                 return IINTERSECT;
             }
         }
