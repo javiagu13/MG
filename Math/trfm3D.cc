@@ -198,15 +198,6 @@ void Trfm3D::clone( const Trfm3D *T ) {	clone(*T); }
 Vector3 Trfm3D::transformPoint(const Vector3 & P) const {
 	Vector3 res;
 	
-	float num1 =m_c1*P;
-	float num2 =m_c2*P;
-	float num3 =m_c3*P;
-
-
-	
-
-	m_d = Vector3::ZERO;
-	m_w  = 1.0f;
 	return res;
 }
 
@@ -707,6 +698,6 @@ void Trfm3D::print( ) const {
 			m_d[0], m_d[1], m_d[2], m_w );
 	printf("-------- -------- --------  ---\n");
 }
-M.setTrans(Vector3(0,0,1));
-Vector3 P = M.transformPoint(Vector3(1,1,1));
-P.print();
+//M.setTrans(Vector3(0,0,1));
+//Vector3 P = M.transformPoint(Vector3(1,1,1));
+//P.print();

@@ -388,6 +388,16 @@ void Node::draw() {
 
 	/* =================== PUT YOUR CODE HERE ====================== */
 
+ 	Node korri = m_parent;
+ 	while(korri->next!=null){
+ 		korri->m_gObject->draw();
+ 		korri = korri->next;
+ 	}
+
+ // draw geometry object (gobj)
+
+ Note:
+    See Recipe 1 in for knowing how to iterate through children.
 
 	/* =================== END YOUR CODE HERE ====================== */
 

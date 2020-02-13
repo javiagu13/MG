@@ -1,4 +1,3 @@
-#include <cstdio>
 #include "mg.h"
 #include "scenes.h"
 #include "skybox.h"
