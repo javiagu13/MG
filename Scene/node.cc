@@ -268,8 +268,11 @@ void Node::addChild(Node *theChild) {
 	if (theChild == 0) return;
 	if (m_gObject) {
 		// node has a gObject, so print warning
+    printf("GObject nodoa dauka");
 	} else {
 		// node does not have gObject, so attach child
+        m_children.push_back(theChild);
+        theChild->m_parent=this;
 	}
 }
 
@@ -341,6 +344,8 @@ void Node::updateBB () {
 //    See Recipe 1 in for knowing how to iterate through children.
 
 void Node::updateWC() {
+	
+	
 }
 
 // @@ TODO:
@@ -352,6 +357,7 @@ void Node::updateWC() {
 // - Propagate Bounding Box to root (propagateBBRoot), starting from the parent, if parent exists.
 
 void Node::updateGS() {
+
 }
 
 // @@ TODO:
@@ -386,18 +392,22 @@ void Node::draw() {
 	if(rs->getBBoxDraw() || m_drawBBox)
 		BBoxGL::draw( m_containerWC );
 
-	/* =================== PUT YOUR CODE HERE ====================== */
-
- 	Node korri = m_parent;
- 	while(korri->next!=null){
- 		korri->m_gObject->draw();
- 		korri = korri->next;
- 	}
-
+    /* =================== PUT YOUR CODE HERE ====================== */
+	rs->push(RenderState::modelview);
+	rs->addTrfm(RenderState::modelview, m_placement);
+	if(m_children.size()!=0){
+	   		for(list<Node *>::iterator it = m_children.begin(), end = m_children.end();it != end; ++it) {
+       			Node *theChild = *it;
+       			theChild->draw();
+   			}
+	}
+	else{
+		m_gObject->draw();
+	}
+	rs->pop(RenderState::modelview);
+	/* =================== END YOUR CODE HERE ====================== */
  // draw geometry object (gobj)
 
- Note:
-    See Recipe 1 in for knowing how to iterate through children.
 
 	/* =================== END YOUR CODE HERE ====================== */
 
