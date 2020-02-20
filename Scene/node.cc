@@ -344,8 +344,19 @@ void Node::updateBB () {
 //    See Recipe 1 in for knowing how to iterate through children.
 
 void Node::updateWC() {
-	
-	
+	if(m_parent==0){
+		m_placementWC->clone(m_placement);
+	}	
+	else{
+		m_placementWC->clone(m_parent->m_placementWC)
+		m_placementWC->clone(m_placement);
+	}
+	if(m_gObject==0){
+	   		for(list<Node *>::iterator it = m_children.begin(), end = m_children.end();it != end; ++it) {
+       			Node *theChild = *it;
+       			theChild->updateWC();
+   			}
+	}
 }
 
 // @@ TODO:
@@ -357,7 +368,10 @@ void Node::updateWC() {
 // - Propagate Bounding Box to root (propagateBBRoot), starting from the parent, if parent exists.
 
 void Node::updateGS() {
-
+	updateWC();
+	if (m_parent!=0){
+		m_parent->propagateBBRoot();
+	}
 }
 
 // @@ TODO:
