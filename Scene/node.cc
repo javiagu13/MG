@@ -273,6 +273,7 @@ void Node::addChild(Node *theChild) {
 		// node does not have gObject, so attach child
         m_children.push_back(theChild);
         theChild->m_parent=this;
+        updateGS();
 	}
 }
 
@@ -298,6 +299,10 @@ void Node::detach() {
 //    - placementWC of node and parents are up-to-date
 
 void Node::propagateBBRoot() {
+	updateBB();
+	if(m_parent!=0){
+		m_parent->propagateBBRoot();
+	}
 }
 
 // @@ TODO: auxiliary function
@@ -326,6 +331,18 @@ void Node::propagateBBRoot() {
 //    See Recipe 1 in for knowing how to iterate through children.
 
 void Node::updateBB () {
+	if(m_gObject != 0){
+		m_containerWC->init();
+		for(list<Node *>::iterator it = m_children.begin(), end = m_children.end();it != end; ++it) {
+       		Node *theChild = *it;
+       		m_containerWC->include(theChild->m_containerWC);
+       	}
+	}
+	else{
+		m_containerWC->clone(m_gObject->getContainer());
+		m_containerWC->transform(m_placementWC);
+	}
+
 }
 
 // @@ TODO: Update WC (world coordinates matrix) of a node and
@@ -348,8 +365,8 @@ void Node::updateWC() {
 		m_placementWC->clone(m_placement);
 	}	
 	else{
-		m_placementWC->clone(m_parent->m_placementWC)
-		m_placementWC->clone(m_placement);
+		m_placementWC->clone(m_parent->m_placementWC);
+		m_placementWC->add(m_placement);
 	}
 	if(m_gObject==0){
 	   		for(list<Node *>::iterator it = m_children.begin(), end = m_children.end();it != end; ++it) {
@@ -357,6 +374,7 @@ void Node::updateWC() {
        			theChild->updateWC();
    			}
 	}
+	updateBB();
 }
 
 // @@ TODO:
@@ -408,7 +426,7 @@ void Node::draw() {
 
     /* =================== PUT YOUR CODE HERE ====================== */
 	rs->push(RenderState::modelview);
-	rs->addTrfm(RenderState::modelview, m_placement);
+	rs->addTrfm(RenderState::modelview, m_placementWC);
 	if(m_children.size()!=0){
 	   		for(list<Node *>::iterator it = m_children.begin(), end = m_children.end();it != end; ++it) {
        			Node *theChild = *it;
