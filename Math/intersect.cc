@@ -76,7 +76,28 @@ int  BBoxBBoxIntersect(const BBox *bba, const BBox *bbb ) {
 //    IINTERSECT intersect
 
 int  BBoxPlaneIntersect (const BBox *theBBox, Plane *thePlane) {
+	Vector3 gertu = Vector3();
+	Vector3 urrun = Vector3();
+	for(int i = 0; i<3; i++){
+		if (thePlane->m_n[i] > 0) {
+			gertu[i] = theBBox->m_min[i];
+			urrun[i] = theBBox->m_max[i];
+		}
+		else{ //kontrakoa
+			gertu[i] = theBBox->m_max[i];
+			urrun[i] = theBBox->m_min[i];
+		}
+	}
 
+	if (thePlane->whichSide(gertu) == thePlane->whichSide(urrun)) {
+		if (thePlane->whichSide(gertu) > 0) {
+			return +IREJECT;
+		}
+		else {
+			return -IREJECT;
+		}
+	}
+	return IINTERSECT;
 }
 
 // Test if two BSpheres intersect.

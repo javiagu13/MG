@@ -268,12 +268,12 @@ void Node::addChild(Node *theChild) {
 	if (theChild == 0) return;
 	if (m_gObject) {
 		// node has a gObject, so print warning
-    printf("GObject nodoa dauka");
+		printf("GObject nodoa dauka.\n");
 	} else {
 		// node does not have gObject, so attach child
-        m_children.push_back(theChild);
-        theChild->m_parent=this;
-        updateGS();
+		m_children.push_back(theChild);
+		theChild->m_parent = this;
+		updateGS();
 	}
 }
 
@@ -300,7 +300,7 @@ void Node::detach() {
 
 void Node::propagateBBRoot() {
 	updateBB();
-	if(m_parent!=0){
+	if (m_parent != 0) {
 		m_parent->propagateBBRoot();
 	}
 }
@@ -331,14 +331,16 @@ void Node::propagateBBRoot() {
 //    See Recipe 1 in for knowing how to iterate through children.
 
 void Node::updateBB () {
-	if(m_gObject != 0){
+	if (m_gObject == 0) {
 		m_containerWC->init();
-		for(list<Node *>::iterator it = m_children.begin(), end = m_children.end();it != end; ++it) {
-       		Node *theChild = *it;
-       		m_containerWC->include(theChild->m_containerWC);
-       	}
+		for(list<Node *>::iterator it = m_children.begin(), end = m_children.end();
+        	it != end; ++it) {
+        	Node *theChild = *it;
+			m_containerWC->include(theChild->m_containerWC);
+    	}
+
 	}
-	else{
+	else {
 		m_containerWC->clone(m_gObject->getContainer());
 		m_containerWC->transform(m_placementWC);
 	}
@@ -361,19 +363,22 @@ void Node::updateBB () {
 //    See Recipe 1 in for knowing how to iterate through children.
 
 void Node::updateWC() {
-	if(m_parent==0){
+	if (m_parent == 0) {
 		m_placementWC->clone(m_placement);
-	}	
-	else{
+	}
+	else {
 		m_placementWC->clone(m_parent->m_placementWC);
 		m_placementWC->add(m_placement);
 	}
-	if(m_gObject==0){
-	   		for(list<Node *>::iterator it = m_children.begin(), end = m_children.end();it != end; ++it) {
-       			Node *theChild = *it;
-       			theChild->updateWC();
-   			}
+
+	if (m_gObject == 0) { //umea du
+		for(list<Node *>::iterator it = m_children.begin(), end = m_children.end();
+    		it != end; ++it) {
+    		Node *theChild = *it;
+    		theChild->updateWC();
+		}
 	}
+	
 	updateBB();
 }
 
@@ -387,7 +392,7 @@ void Node::updateWC() {
 
 void Node::updateGS() {
 	updateWC();
-	if (m_parent!=0){
+	if (m_parent != 0) {
 		m_parent->propagateBBRoot();
 	}
 }
@@ -437,9 +442,6 @@ void Node::draw() {
 		m_gObject->draw();
 	}
 	rs->pop(RenderState::modelview);
-	/* =================== END YOUR CODE HERE ====================== */
- // draw geometry object (gobj)
-
 
 	/* =================== END YOUR CODE HERE ====================== */
 
