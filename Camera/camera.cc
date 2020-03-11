@@ -320,11 +320,11 @@ int Camera::checkFrustum(const BBox *theBBox,
 		if(emaitza==IINTERSECT){
 			ebaketaGertatuDa=true;
 		}
-		else if (ebaki== +IREJECT){
+		else if (emaitza== +IREJECT){
 			return 0;
 		}
 	}
-	if (ebaketataGertatuDa==true){
+	if (ebaketaGertatuDa==true){
 		return 1;
 	}
 	return -1; // BBox is fully inside the frustum
