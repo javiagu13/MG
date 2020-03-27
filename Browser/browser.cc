@@ -570,7 +570,7 @@ int main(int argc, char** argv) {
 		InitLight();
 		InitShaders();
 		// Change the line below for different scenes
-		displayNode = create_scene();
+		displayNode = create_scene_city();
 		// Other possible scenes:
 		//
 		// displayNode = create_scene_city();

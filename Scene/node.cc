@@ -429,18 +429,20 @@ void Node::draw() {
 		BBoxGL::draw( m_containerWC );
 
     /* =================== PUT YOUR CODE HERE ====================== */
-rs->push(RenderState::modelview);
-	rs->addTrfm(RenderState::modelview, m_placementWC);
+	if(m_gObject){
+		rs->push(RenderState::modelview);
+		rs->addTrfm(RenderState::modelview, m_placementWC);
+		m_gObject->draw();
+		rs->pop(RenderState::modelview);
+	}
 	if(m_children.size()!=0){
 	   		for(list<Node *>::iterator it = m_children.begin(), end = m_children.end();it != end; ++it) {
        			Node *theChild = *it;
        			theChild->draw();
    			}
 	}
-	else{
-		m_gObject->draw();
-	}
-	rs->pop(RenderState::modelview);
+
+	
 	/* =================== END YOUR CODE HERE ====================== */
 
 	// Restore shaders
@@ -465,6 +467,18 @@ void Node::setCulled(bool culled) {
 //          update m_isCulled accordingly.
 
 void Node::frustumCull(Camera *cam) {
+int pos = cam->checkFrustum(m_containerWC,0);
+	if (pos==0){
+		setCulled(false);
+		for(list<Node *>::iterator it = m_children.begin(), end = m_children.end();
+			it != end; ++it) {
+			Node *theChild = *it;
+			theChild->frustumCull(cam);
+		}
+	}
+	else if (pos==1){
+		setCulled(true);
+	}
 }
 
 // @@ TODO: Check whether a BSphere (in world coordinates) intersects with a
