@@ -27,7 +27,8 @@
 
 
 class RenderState {
-
+	float getSc() const;
+	void setSc(float v);
 public:
 	static RenderState *instance();
 
@@ -195,6 +196,7 @@ public:
 	void print() const;
 
 private:
+	float m_sc;
 	RenderState();
 	~RenderState();
 	RenderState(const RenderState &);
