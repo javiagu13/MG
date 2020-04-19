@@ -27,8 +27,7 @@
 
 
 class RenderState {
-	float getSc() const;
-	void setSc(float v);
+	
 public:
 	static RenderState *instance();
 
@@ -99,6 +98,9 @@ public:
 	 * @param matrixMode the mode (see stack_t)
 	 */
 	void printTop(stack_t matrixMode);
+	float getSc() const;
+	void setSc(float v);
+
 
 	///////////////////////////////////////////
 	// Shaders
