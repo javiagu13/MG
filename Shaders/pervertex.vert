@@ -40,9 +40,9 @@ void main() {
 	vec3 iTot=vec3(0,0,0);
 
 	for(int i=0; i < active_lights_n; i++){
-		vec3 diff=theLights[i].diffuse;
+		vec3 diff=theLights[i].diffuse* theMaterial.diffuse;
 		if(theLights[i].position.w == 0.0) {
-			vec3 l = normalize(theLights[i].position.xyz);
+			vec3 l = normalize(-theLights[i].position.xyz);
 			iTot += max(0, dot(n, l)) * (diff);
 			
 		}
