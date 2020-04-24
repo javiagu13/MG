@@ -34,8 +34,8 @@ varying vec2 f_texCoord;
 
 
 void main() {
-	//f_color=vec4(0,0,0,0);
 	vec3 n = normalize(modelToCameraMatrix * vec4(v_normal, 0.0)).xyz;
+	vec3 kamErp = (modelToCameraMatrix * vec4(v_position, 1.0)).xyz;
 	gl_Position = modelToClipMatrix * vec4(v_position, 1);
 	vec3 iTot=vec3(0,0,0);
 
@@ -43,8 +43,19 @@ void main() {
 		vec3 diff=theLights[i].diffuse* theMaterial.diffuse;
 		if(theLights[i].position.w == 0.0) {
 			vec3 l = normalize(-theLights[i].position.xyz);
+			vec3 r = 2*dot(n,l)*n-l;
 			iTot += max(0, dot(n, l)) * (diff);
 			
+		}
+		else{
+			if(theLights[i].cosCutOff == 0.0){
+				vec3 l = normalize(theLights[i].position.xyz-kamErp);
+				vec3 r = 2*dot(n,l)*n-l;
+				vec3 ahuldura = theLights[i].attenuation;	
+				float dist = distance(theLights[i].position.xyz,kamErp);
+				float d = 1 / (ahuldura[0] +ahuldura[1]*dist + ahuldura[2]*pow(dist,2));
+				iTot += d*max(0, dot(n, l)) * (diff);
+			}	
 		}
 	}
 	iTot += scene_ambient;
