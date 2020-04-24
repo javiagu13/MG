@@ -48,14 +48,19 @@ void main() {
 			
 		}
 		else{
+			vec3 l = normalize(theLights[i].position.xyz-kamErp);
+			vec3 r = 2*dot(n,l)*n-l;
 			if(theLights[i].cosCutOff == 0.0){
-				vec3 l = normalize(theLights[i].position.xyz-kamErp);
-				vec3 r = 2*dot(n,l)*n-l;
 				vec3 ahuldura = theLights[i].attenuation;	
 				float dist = distance(theLights[i].position.xyz,kamErp);
 				float d = 1 / (ahuldura[0] +ahuldura[1]*dist + ahuldura[2]*pow(dist,2));
 				iTot += d*max(0, dot(n, l)) * (diff);
-			}	
+			}
+			else{
+				float spot= max(dot(-l, theLights[i].spotDir),0);			
+				iTot+= spot*max(0, dot(n, l))*diff;
+			}
+				
 		}
 	}
 	iTot += scene_ambient;
