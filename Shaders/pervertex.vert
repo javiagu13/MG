@@ -58,7 +58,9 @@ void main() {
 			}
 			else{
 				float spot= max(dot(-l, theLights[i].spotDir),0);			
-				iTot+= spot*max(0, dot(n, l))*diff;
+				if (spot > theLights[i].cosCutOff){
+					iTot+= spot*max(0, dot(n, l))*diff;
+				}
 			}
 				
 		}
