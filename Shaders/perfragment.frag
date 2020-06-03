@@ -63,8 +63,8 @@ void main() {
 		}
 	}
 	iTot += scene_ambient;
-	f_color = vec4(iTot, 1.0);
-	texColor = texture2D(texture0,f_texCoord)
-	gl_FragColor = f_color*texColor;
+	vec4 color = vec4(iTot, 1.0);
+	vec4 texColor = texture2D(texture0,f_texCoord);
+	gl_FragColor = color*texColor;
 
 }
