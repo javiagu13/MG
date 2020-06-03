@@ -30,6 +30,44 @@ varying vec2 f_texCoord;
 
 void main() {
 
-	gl_FragColor = vec4(1.0);
+	vec3 n = normalize(modelToCameraMatrix * vec4(v_normal, 0.0)).xyz;
+	vec3 kamErp = (modelToCameraMatrix * vec4(v_position, 1.0)).xyz;
+	gl_Position = modelToClipMatrix * vec4(v_position, 1);
+	vec3 v = -normalize(kamErp);
+	vec3 iTot=vec3(0,0,0);
+	vec3 iSpec=vec3(0,0,0);
+
+	for(int i=0; i < active_lights_n; i++){
+		vec3 diff=theLights[i].diffuse* theMaterial.diffuse;
+		if(theLights[i].position.w == 0.0) {
+			vec3 l = normalize(-theLights[i].position.xyz);
+			vec3 r = 2*dot(n,l)*n-l;
+			vec3 iSpec=pow(max(0, dot(r, v)), theMaterial.shininess)*(theMaterial.specular*theLights[i].specular); 
+			iTot += max(0, dot(n, l)) * (diff+iSpec);
+			
+		}
+		else{
+			vec3 l = normalize(theLights[i].position.xyz-kamErp);
+			vec3 r = 2*dot(n,l)*n-l;
+			vec3 iSpec=pow(max(0, dot(r, v)), theMaterial.shininess)*(theMaterial.specular*theLights[i].specular); 
+
+			if(theLights[i].cosCutOff == 0.0){
+				vec3 ahuldura = theLights[i].attenuation;	
+				float dist = distance(theLights[i].position.xyz,kamErp);
+				float d = 1 / (ahuldura[0] +ahuldura[1]*dist + ahuldura[2]*pow(dist,2));
+				iTot += d*max(0, dot(n, l)) * (diff+iSpec);
+			}
+			else{
+				float spot= max(dot(-l, theLights[i].spotDir),0);			
+				if (spot > theLights[i].cosCutOff){
+					iTot+= spot*max(0, dot(n, l))*(diff+iSpec);
+				}
+			}
+				
+		}
+	}
+	iTot += scene_ambient;
+	f_color = vec4(iTot, 1.0);
+	f_texCoord = v_texCoord;
 
 }
