@@ -64,15 +64,13 @@ void main() {
 			f_lightDirection[i] = cameraToTangent*(theLights[i].position.xyz);
 		}
 		else{
-		vec3 kameraErp = (modelToCameraMatrix*(v_position, 1.0)).xyz;		
+		vec3 kameraErp = (modelToCameraMatrix*vec4(v_position, 1.0)).xyz;		
 
 		f_lightDirection[i] = cameraToTangent*(theLights[i].position.xyz - kameraErp);
-		if(theLights[i].cosCutOff != 0.0){
-			f_spotDirection[i] = cameraToTangent*theLights[i].spotDir;
+			if(theLights[i].cosCutOff != 0.0){
+				f_spotDirection[i] = cameraToTangent*theLights[i].spotDir;
+			}
 		}
-	}
-		
-	
-	
+	}	
 
 }
