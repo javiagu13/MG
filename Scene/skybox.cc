@@ -59,18 +59,18 @@ void CreateSkybox(GObject *gobj,
 	}
 	/* =================== PUT YOUR CODE HERE ====================== */
 	//Materiala sortzu eta textura gehitu
-	Material *mat = MaterialManager::instance()->create("materiala");
+	Material *mat = MaterialManager::instance()->create("new","materiala");
 	mat->setTexture(ctexname);
 
 	//Materiala objektu geometrikoari esleitu (definitu gabe)
-	
-	
+	gobj = GObject::setMaterial(Material *mat);
+
 	//bukaerako nodoaren sorkuntza 
-	Node *node = NodeManager::instance()->create("sky");
+	Node *node = NodeManager::instance()->create("new","sky");
 	node->attachShader(skyshader);
 	node->attachGObject(gobj);
-	return node;
-
+	
+	RenderState::instance()->setSkybox(node);
 	/* =================== END YOUR CODE HERE ====================== */
 }
 
