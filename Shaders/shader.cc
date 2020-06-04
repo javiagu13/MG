@@ -196,7 +196,7 @@ template<class V> void ShaderProgram::send_uniform(const std::string uname, cons
 
 void ShaderProgram::beforeDraw() {
 
-	Material *mat;
+	Material *mat = rs->getFrontMaterial();
 	Texture *tex;
 	RenderState *rs = RenderState::instance();
 	static char buffer[1024];
@@ -239,7 +239,6 @@ void ShaderProgram::beforeDraw() {
 	}
 	this->send_uniform("active_lights_n", i);
 
-	mat = rs->getFrontMaterial();
 	if (mat != 0) {
 		this->send_uniform("theMaterial.diffuse", mat->getDiffuse());
 		this->send_uniform("theMaterial.specular", mat->getSpecular());
@@ -254,6 +253,13 @@ void ShaderProgram::beforeDraw() {
 	}
 	if (this->has_capability("sc")){
 		this->send_uniform("sc", rs->getSc());
+	}
+	if (has_capability("specmap")) {
+		tex = mat->getSpecularMap();
+		if (tex != 0) {
+			tex->bindGLUnit(Constants::gl_texunits::specular);
+			this->send_uniform("specmap", Constants::gl_texunits::specular);
+		}
 	}
 }
 

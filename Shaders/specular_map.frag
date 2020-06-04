@@ -39,14 +39,14 @@ void main() {
 		if(theLights[i].position.w == 0.0) {
 			vec3 l = normalize(-theLights[i].position.xyz);
 			vec3 r = 2*dot(n,l)*n-l;
-			vec3 iSpec=pow(max(0, dot(r, v)), theMaterial.shininess)*(theMaterial.specular*theLights[i].specular); 
+			vec3 iSpec=pow(max(0, dot(r, v)), theMaterial.shininess)*(theLights[i].specular); 
 			iTot += max(0, dot(n, l)) * (diff+iSpec);
 			
 		}
 		else{
 			vec3 l = normalize(theLights[i].position.xyz-f_position);
 			vec3 r = 2*dot(n,l)*n-l;
-			vec3 iSpec=pow(max(0, dot(r, v)), theMaterial.shininess)*(theMaterial.specular*theLights[i].specular); 
+			vec3 iSpec=pow(max(0, dot(r, v)), theMaterial.shininess)*(theLights[i].specular); 
 
 			if(theLights[i].cosCutOff == 0.0){
 				vec3 ahuldura = theLights[i].attenuation;	
@@ -63,6 +63,6 @@ void main() {
 	}
 	iTot += scene_ambient;
 	vec4 color = vec4(iTot, 1.0);
-	vec4 texColor = texture2D(texture0,f_texCoord);
+	vec4 texColor = texture2D(specmap,f_texCoord);
 	gl_FragColor = color*texColor;
 }
