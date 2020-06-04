@@ -48,12 +48,12 @@ void main() {
 	gl_Position = modelToClipMatrix * vec4(v_position, 1.0);
 
 	// matrix to transform from camera space to tangent 
-	spacemat3 cameraToTangent = transpose(mat3(t,b,n));
+	mat3 cameraToTangent = transpose(mat3(t,b,n));
 	
 	// Ligth direction is in camera space
 	// (camera space -> tangent space)
 	// NOTE: do not normalize the vector
-	f_ligthDirection[0] = cameraToTangent*(theLights[0].position.xyz);
+	f_lightDirection[0] = cameraToTangent*(theLights[0].position.xyz);
 
 	// Do the same with f_viewDirection, f_spotDirection
 	f_viewDirection = cameraToTangent*(-(modelToCameraMatrix * vec4(v_position, 1.0)).xyz);

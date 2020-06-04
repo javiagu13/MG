@@ -37,9 +37,9 @@ void main() {
 	// Decode the tangent space normal (from [0..1] to [-1..+1])
 	vec3 N = texture2D(bumpmap, f_texCoord).rgb * 2.0 - 1.0;
 	// Compute ambient, diffuse and specular contribution
-	...
-	vec4 f_color = (1,3,1); //probatzeko
-	...
-	// Final colorgl_FragColor = f_color * baseColor;
-	final colorgl_FragColor = f_color*baseColor;
+	//...
+	//vec4 kolorea = (1.0,1.0,1.0,1.0); //probatzeko
+	//...
+	// Final colorgl_FragColor = 
+	gl_FragColor = vec4(1.0,1.0,1.0,1.0);
 }
