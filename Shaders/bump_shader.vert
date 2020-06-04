@@ -36,5 +36,22 @@ varying vec3 f_lightDirection[4]; // tangent space
 varying vec3 f_spotDirection[4];  // tangent space
 
 void main() {
+	// get 3x3 modelview matrix
+	mat3 MV3x3 = mat3(modelToCameraMatrix);
+
+	// Normal, tangent and bitangent in camera coordinates
+	// (object space -> camera space)
+	vec3 t = ...
+	vec3 b = ...
+	vec3 n = ...
+	
+	// matrix to transform from camera space to tangent 
+	spacemat3 cameraToTangent = ...
+	
+	// Ligth direction is in camera space
+	// (camera space -> tangent space)
+	// NOTE: do not normalize the vector
+	f_ligthDirection = ...
+	// Do the same with f_viewDirection, f_spotDirection
 	gl_Position = modelToClipMatrix * vec4(v_position, 1.0);
 }
