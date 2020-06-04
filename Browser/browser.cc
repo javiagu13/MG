@@ -212,6 +212,7 @@ static void Render(Camera *theCamera) {
 	RenderState *rs = RenderState::instance();
 	LightManager *lmgr = LightManager::instance();
 
+	rs->setCamera(theCamera);
 	// draw the background color
 	glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	rs->loadTrfm(RenderState::projection, theCamera->projectionTrfm());
@@ -539,7 +540,7 @@ void animate(int value) {
 	// ##### REPLACE WITH YOUR OWN GAME/APP MAIN CODE HERE #####
 	if (runAnimation) {
 		// Force a redisplay to render the new image
-		RenderState::instance()->setSc(cosf(currTime/300.0)+1); // Bete beharra
+
 		glutPostRedisplay();
 	}
 	// ##### END OF GAME/APP MAIN CODE #####
