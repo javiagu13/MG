@@ -46,6 +46,7 @@ void main() {
 	vec3 n = MV3x3*v_normal;
 	
 	gl_Position = modelToClipMatrix * vec4(v_position, 1.0);
+	f_texCoord = v_texCoord;
 
 	// matrix to transform from camera space to tangent 
 	mat3 cameraToTangent = transpose(mat3(t,b,n));
@@ -53,10 +54,25 @@ void main() {
 	// Ligth direction is in camera space
 	// (camera space -> tangent space)
 	// NOTE: do not normalize the vector
-	f_lightDirection[0] = cameraToTangent*(theLights[0].position.xyz);
+	
 
 	// Do the same with f_viewDirection, f_spotDirection
 	f_viewDirection = cameraToTangent*(-(modelToCameraMatrix * vec4(v_position, 1.0)).xyz);
-	f_spotDirection[0] = cameraToTangent*theLights[0].spotDir;
+	
+	for(int i=0; i < active_lights_n; ++i) {
+		if (theLights[i].position.w == 0.0) {
+			f_lightDirection[i] = cameraToTangent*(theLights[i].position.xyz);
+		}
+		else{
+		vec3 kameraErp = (modelToCameraMatrix*(v_position, 1.0)).xyz;		
+
+		f_lightDirection[i] = cameraToTangent*(theLights[i].position.xyz - KAMARAKO ERPINA);
+		if(theLights[i].cosCutOff != 0.0){
+			f_spotDirection[i] = cameraToTangent*theLights[i].spotDir;
+		}
+	}
+		
+	
+	
 
 }
