@@ -41,17 +41,22 @@ void main() {
 
 	// Normal, tangent and bitangent in camera coordinates
 	// (object space -> camera space)
-	vec3 t = ...
-	vec3 b = ...
-	vec3 n = ...
+	vec3 t = MV3x3*v_TBN_t;
+	vec3 b = MV3x3*v_TBN_b;
+	vec3 n = MV3x3*v_normal;
 	
+	gl_Position = modelToClipMatrix * vec4(v_position, 1.0);
+
 	// matrix to transform from camera space to tangent 
-	spacemat3 cameraToTangent = ...
+	spacemat3 cameraToTangent = transpose(mat3(t,b,n));
 	
 	// Ligth direction is in camera space
 	// (camera space -> tangent space)
 	// NOTE: do not normalize the vector
-	f_ligthDirection = ...
+	f_ligthDirection[0] = cameraToTangent*(theLights[0].position.xyz);
+
 	// Do the same with f_viewDirection, f_spotDirection
-	gl_Position = modelToClipMatrix * vec4(v_position, 1.0);
+	f_viewDirection = cameraToTangent*(-(modelToCameraMatrix * vec4(v_position, 1.0)).xyz);
+	f_spotDirection[0] = cameraToTangent*theLights[0].spotDir;
+
 }

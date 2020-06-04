@@ -38,7 +38,8 @@ void main() {
 	vec3 N = texture2D(bumpmap, f_texCoord).rgb * 2.0 - 1.0;
 	// Compute ambient, diffuse and specular contribution
 	...
-	vec4 f_color = ...
+	vec4 f_color = (1,3,1); //probatzeko
 	...
 	// Final colorgl_FragColor = f_color * baseColor;
+	final colorgl_FragColor = f_color*baseColor;
 }
