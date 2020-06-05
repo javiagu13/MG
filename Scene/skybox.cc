@@ -111,10 +111,15 @@ void DisplaySky(Camera *cam) {
 	if (!skynode) return;
 
 	/* =================== PUT YOUR CODE HERE ====================== */
+	Trfm3D camPosizioa; //kamaren matrizea jakiteko haren kokapena	
+	
 	//skyshaderra lortu  eta shaderra gehitu (aurreko shaderra?)
 	ShaderProgram prev_shaderra = RenderState::instance()->getShader;
 
 	//Mugitu skybox kamera dagoen tokira
+	vec3 camCoord= cam->getPosition();
+	camPosizioa.setTrans(camCoord);
+	//renderStati gehitu behar zaio Trfm3DcamPosizioa
 	
 
 	//skyshaderra sartu
