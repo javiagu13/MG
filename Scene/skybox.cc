@@ -70,7 +70,7 @@ void CreateSkybox(GObject *gobj,
 	node->attachShader(skyshader);
 	node->attachGObject(gobj);
 	
-	RenderState::instance()->setSkybox(node);
+	RenderState::instance()->setSkybox(node); 
 	/* =================== END YOUR CODE HERE ====================== */
 }
 
@@ -111,6 +111,15 @@ void DisplaySky(Camera *cam) {
 	if (!skynode) return;
 
 	/* =================== PUT YOUR CODE HERE ====================== */
+	//skyshaderra lortu  eta shaderra gehitu (aurreko shaderra?)
+	ShaderProgram prev_shaderra = RenderState::instance()->getShader;
+
+	//Mugitu skybox kamera dagoen tokira
+	
+
+	//skyshaderra sartu
+	RenderState::instance()->setShader(sky_shaderra);
+	
 
 	/* =================== END YOUR CODE HERE ====================== */
 }
