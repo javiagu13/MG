@@ -113,17 +113,27 @@ void DisplaySky(Camera *cam) {
 	/* =================== PUT YOUR CODE HERE ====================== */
 	Trfm3D camPosizioa; //kamaren matrizea jakiteko haren kokapena	
 	
-	//skyshaderra lortu  eta shaderra gehitu (aurreko shaderra?)
-	ShaderProgram prev_shaderra = RenderState::instance()->getShader;
+	//aurreko skyshaderra lortu
+	ShaderProgram prev_shaderra = rs->getShader();
 
 	//Mugitu skybox kamera dagoen tokira
 	vec3 camCoord= cam->getPosition();
 	camPosizioa.setTrans(camCoord);
-	//renderStati gehitu behar zaio Trfm3DcamPosizioa
+	rs->addTrfm(RenderState::modelview, &camPosizioa);
 	
+	//depth kendu	
+	glDisable(GL_DEPTH_TEST);
 
+	//Jarri skybox shaderra
+	
+	//draw skybox
+	GObject *skyObject=skynode->getGobject();
+	skyObject->draw();
+
+	//depth errekuperatu
+	glEnable(GL_DEPTH_TEST);
 	//skyshaderra sartu
-	RenderState::instance()->setShader(sky_shaderra);
+	rs->setShader(sky_shaderra);
 	
 
 	/* =================== END YOUR CODE HERE ====================== */
