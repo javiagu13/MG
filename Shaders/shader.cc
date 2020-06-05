@@ -196,7 +196,7 @@ template<class V> void ShaderProgram::send_uniform(const std::string uname, cons
 
 void ShaderProgram::beforeDraw() {
 
-	Material *mat = rs->getFrontMaterial();
+	Material *mat ;
 	Texture *tex;
 	RenderState *rs = RenderState::instance();
 	static char buffer[1024];

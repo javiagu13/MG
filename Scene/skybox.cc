@@ -59,16 +59,16 @@ void CreateSkybox(GObject *gobj,
 	}
 	/* =================== PUT YOUR CODE HERE ====================== */
 	//Materiala sortzu eta textura gehitu
-	Material *mat = MaterialManager::instance()->create("new","materiala");
+	Material *mat = MaterialManager::instance()->create("newmat");
 	mat->setTexture(ctex);
 
-	//Materiala objektu geometrikoari esleitu (definitu gabe)
-	gobj = GObject::setMaterial(mat);
+	//Materiala objektu geometrikoari esleitu
+	gobj ->setMaterial(mat);
 
 	//bukaerako nodoaren sorkuntza 
-	Node *node = NodeManager::instance()->create("new","sky");
+	Node *node = NodeManager::instance()->create("newsky");
 	node->attachShader(skyshader);
-	node->attachGObject(gobj);
+	node->attachGobject(gobj);
 	
 	RenderState::instance()->setSkybox(node); 
 	/* =================== END YOUR CODE HERE ====================== */
@@ -114,17 +114,22 @@ void DisplaySky(Camera *cam) {
 	Trfm3D camPosizioa; //kamaren matrizea jakiteko haren kokapena	
 	
 	//aurreko skyshaderra lortu
-	ShaderProgram prev_shaderra = rs->getShader();
+	ShaderProgram *prev_shaderra = rs->getShader();
+	ShaderProgram *sky_shader = skynode->getShader();
 
 	//Mugitu skybox kamera dagoen tokira
-	vec3 camCoord= cam->getPosition();
+	Vector3 camCoord= cam->getPosition();
 	camPosizioa.setTrans(camCoord);
 	rs->addTrfm(RenderState::modelview, &camPosizioa);
+	rs->push(RenderState::modelview);
 	
 	//depth kendu	
 	glDisable(GL_DEPTH_TEST);
+	
 
+	rs->pop(RenderState::modelview);
 	//Jarri skybox shaderra
+	rs->setShader(sky_shader);
 	
 	//draw skybox
 	GObject *skyObject=skynode->getGobject();
@@ -133,7 +138,7 @@ void DisplaySky(Camera *cam) {
 	//depth errekuperatu
 	glEnable(GL_DEPTH_TEST);
 	//skyshaderra sartu
-	rs->setShader(sky_shaderra);
+	rs->setShader(prev_shaderra);
 	
 
 	/* =================== END YOUR CODE HERE ====================== */
