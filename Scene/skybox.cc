@@ -60,10 +60,10 @@ void CreateSkybox(GObject *gobj,
 	/* =================== PUT YOUR CODE HERE ====================== */
 	//Materiala sortzu eta textura gehitu
 	Material *mat = MaterialManager::instance()->create("new","materiala");
-	mat->setTexture(ctexname);
+	mat->setTexture(ctex);
 
 	//Materiala objektu geometrikoari esleitu (definitu gabe)
-	gobj = GObject::setMaterial(Material *mat);
+	gobj = GObject::setMaterial(mat);
 
 	//bukaerako nodoaren sorkuntza 
 	Node *node = NodeManager::instance()->create("new","sky");

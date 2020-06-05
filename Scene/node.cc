@@ -418,6 +418,8 @@ void Node::draw() {
 
 	if (m_isCulled) return;
 
+
+		
 	// Set shader (save previous)
 	if (m_shader != 0) {
 		prev_shader = rs->getShader();
@@ -432,6 +434,7 @@ void Node::draw() {
 	if(m_gObject){
 		rs->push(RenderState::modelview);
 		rs->addTrfm(RenderState::modelview, m_placementWC);
+		rs->loadTrfm(RenderState::model, m_placementWC);
 		m_gObject->draw();
 		rs->pop(RenderState::modelview);
 	}
