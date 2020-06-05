@@ -69,8 +69,9 @@ void CreateSkybox(GObject *gobj,
 	Node *node = NodeManager::instance()->create("newsky");
 	node->attachShader(skyshader);
 	node->attachGobject(gobj);
-	
-	RenderState::instance()->setSkybox(node); 
+
+	RenderState *rs = RenderState::instance();
+	rs->setSkybox(node); 
 	/* =================== END YOUR CODE HERE ====================== */
 }
 
